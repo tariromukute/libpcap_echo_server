@@ -1,0 +1,5 @@
+collections:
+  # Install a collection from Ansible Galaxy.
+  - name: tariromukute.olan_roles
+    version: 1.0.1
+    source: https://galaxy.ansible.com

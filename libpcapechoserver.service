@@ -1,0 +1,10 @@
+[Unit]
+Description=An echo server using libpcap
+[Service]
+Type=simple
+ExecStart=/opt/libpcap_echo_server/main
+Restart=on-failure
+RestartSec=10
+KillMode=process
+[Install]
+WantedBy=multi-user.target
