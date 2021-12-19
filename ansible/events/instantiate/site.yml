@@ -1,6 +1,7 @@
 # Install requirements
 - hosts: all
   tasks:
-    - import_role:
-        name: tariromukute.olan_roles.olan_bpftrace
-        user: '{{ olan_user }}'
+  - import_role:
+      name: tariromukute.olan_roles.olan_bpftrace
+    vars:  
+      user: olan

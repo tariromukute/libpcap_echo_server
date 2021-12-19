@@ -3,3 +3,5 @@ collections:
   - name: tariromukute.olan_roles
     version: 1.0.1
     source: https://galaxy.ansible.com
+  - name: community.general
+    source: https://galaxy.ansible.com
