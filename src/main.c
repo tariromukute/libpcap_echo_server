@@ -1,6 +1,6 @@
 /*
 	Packet sniffer using libpcap library
-    gcc libpcap_echo_server.c -lpcap -o libpcap_echo_server
+    gcc main.c -lpcap -o main
 	https://www.devdungeon.com/content/using-libpcap-c
 */
 #include <pcap.h>
@@ -69,7 +69,6 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Couldn't open device %s : %s\n" , ifr_send.ifr_name , errbuf);
 		exit(1);
 	}
-	printf("Done\n");
 	
 	const u_char *packet;
 	struct pcap_pkthdr packet_header;
@@ -119,7 +118,7 @@ void process_packet(const struct pcap_pkthdr *header, const u_char *buffer)
 			++others;
 			break;
 	}
-	printf("TCP : %d   UDP : %d   ICMP : %d   IGMP : %d   Others : %d   Total : %d\r", tcp , udp , icmp , igmp , others , total);
+	// printf("TCP : %d   UDP : %d   ICMP : %d   IGMP : %d   Others : %d   Total : %d\r", tcp , udp , icmp , igmp , others , total);
 }
 
 /*

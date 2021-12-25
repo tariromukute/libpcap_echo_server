@@ -1,7 +1,22 @@
+- name: Build the default target
+  community.general.make:
+    chdir: /opt/libpcap_echo_server
 
-- name: Check uptime of remote Ubuntu server
-  shell: uptime
-  register: command_output
+- name: Build the default target
+  community.general.make:
+    chdir: /opt/libpcap_echo_server
+    target: install
 
-- debug:
-    var: command_output.stdout_lines
+# Overide the default conf file
+- name: Build the default target
+  community.general.make:
+    chdir: /opt/libpcap_echo_server
+    target: install
+
+- name: Creating a file with content
+  copy:
+    dest: "/opt/libpcap_echo_server/olan-libpcap-echo-server.conf"
+    content: |
+      RCV={{ receive_interface }}
+      SND={{ send_interface }}
+    mode: +x

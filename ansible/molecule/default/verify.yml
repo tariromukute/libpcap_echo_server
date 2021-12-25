@@ -1,0 +1,15 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Populate services facts
+      service_facts:
+
+    - name: Verify VNF is running
+      assert:
+        that:
+          - ansible_facts.services["olan-libpcap-echo-server.service"].state == 'running'
+          - ansible_facts.services["olan-libpcap-echo-server.service"].status == 'enabled'

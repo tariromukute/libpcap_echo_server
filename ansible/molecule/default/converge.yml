@@ -1,0 +1,105 @@
+---
+- name: Converge
+  hosts: all
+  
+  vars:
+    rcvInterfaceOverride: "{{ lookup('env', 'LIBPCAP_RCV_INTERFACE') }}"
+    rcvInterface: "{{ (rcvInterfaceOverride | length > 0) | ternary(rcvInterfaceOverride, 'lo') }}"
+    sndInterfaceOverride: "{{ lookup('env', 'LIBPCAP_SND_INTERFACE') }}"
+    sndInterface: "{{ (sndInterfaceOverride | length > 0) | ternary(sndInterfaceOverride, 'lo') }}"
+  # These tasks are only for testing. During prod the files
+  # and tasks are fetched from the git repo and run directly,
+  tasks:
+    - name: Update apt cache (on Debian).
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family == 'Debian'
+
+    - name: "Instatiate the VNF"
+      include: ../../events/instantiate/site.yml
+
+    - name: copying file with playbook
+      become: true 
+      copy:
+        src: ../../../src/
+        dest: /opt/libpcap_echo_server
+        remote_src: no
+
+    - name: "Configure the VNF"
+      include: ../../events/configure/site.yml
+      vars:
+        receive_interface: "{{ rcvInterface }}"
+        send_interface: "{{ sndInterface }}"
+
+    - name: "Operate the VNF"
+      include: ../../events/operate/site.yml
+
+    - name: Populate services facts
+      service_facts:
+      register: services_state
+
+    # - name: Debug
+    #   debug:
+    #     var: services_state
+    
+    - name: Verify that VNF is running
+      assert:
+        that:
+          - ansible_facts.services["olan-libpcap-echo-server.service"].state == 'running'
+          - ansible_facts.services["olan-libpcap-echo-server.service"].status == 'disabled'
+      
+    # - name: "Stop the VNF"
+    #   include: ../../events/operate/stop.yml
+
+    # - name: Populate services facts
+    #   service_facts:
+    #   register: services_state
+
+    # # - name: Debug
+    # #   debug:
+    # #     var: services_state
+
+    # - name: Verify that VNF is stopped
+    #   assert:
+    #     that:
+    #       - ansible_facts.services["olan-libpcap-echo-server.service"].state == 'stopped' or ansible_facts.services["olan-libpcap-echo-server.service"].state == 'inactive'
+    #       - ansible_facts.services["olan-libpcap-echo-server.service"].status == 'disabled'
+    
+    # - name: "Start the VNF"
+    #   include: ../../events/operate/start.yml
+
+    # - name: Populate services facts
+    #   service_facts:
+    #   register: services_state
+
+    # # - name: Debug
+    # #   debug:
+    # #     var: services_state
+
+    # - name: Verify that VNF is running
+    #   assert:
+    #     that:
+    #       - ansible_facts.services["olan-libpcap-echo-server.service"].state == 'running'
+    #       - ansible_facts.services["olan-libpcap-echo-server.service"].status == 'disabled'
+
+    # - name: "Terminate VNF"
+    #   include: ../../events/terminate/site.yml
+
+    # - name: Populate services facts
+    #   service_facts:
+    #   register: services_state
+
+    # # - name: Debug
+    # #   debug:
+    # #     var: services_state
+
+    # - name: Verify that VNF is terminated
+    #   assert:
+    #     that:
+    #       - "'olan-libpcap-echo-server.service' not in ansible_facts.services"
+
+    
+
+
+      

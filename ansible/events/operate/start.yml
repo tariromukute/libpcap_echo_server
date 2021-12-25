@@ -1,0 +1,4 @@
+- name: Start service olan-libpcap-echo-server, if not started
+  ansible.builtin.service:
+    name: olan-libpcap-echo-server
+    state: started

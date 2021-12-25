@@ -1,0 +1,17 @@
+[Unit]
+Description=An echo server using libpcap
+Wants=network-online.target
+After=network-online.target
+[Service]
+Type=simple
+EnvironmentFile=/etc/olan-libpcap-echo-server.conf
+ExecStart=/opt/libpcap_echo_server/main $RCV $SND
+Restart=on-failure
+RestartSec=10
+KillMode=process
+# Works only in systemd v240 and newer!
+StandardOutput=journal
+StandardError=inherit
+# LogsDirectory=/var/log/libpcap_echo_server
+[Install]
+WantedBy=multi-user.target

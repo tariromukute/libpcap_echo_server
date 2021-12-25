@@ -1,6 +1,14 @@
-- name: Check uptime of remote Ubuntu server
-  shell: uptime
-  register: command_output
+- name: Start service olan-libpcap-echo-server, if not started
+  ansible.builtin.service:
+    name: olan-libpcap-echo-server
+    state: stopped
 
-- debug:
-    var: command_output.stdout_lines
+- name: Build the default target
+  community.general.make:
+    chdir: /opt/libpcap_echo_server
+    target: uninstall
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: /opt/libpcap_echo_server
