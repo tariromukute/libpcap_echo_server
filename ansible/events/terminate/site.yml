@@ -2,18 +2,21 @@
   # specify a limit on the command line, using -l or --limit to limit the hosts
   hosts: 'all'
 
+  vars:
+    path: "{{ vnf_path | default('/opt/libpcap_echo_server') }}"
+
   tasks:
   - name: Start service olan-libpcap-echo-server, if not started
     ansible.builtin.service:
       name: olan-libpcap-echo-server
       state: stopped
 
-  - name: Build the default target
+  - name: Run make uninstall
     community.general.make:
-      chdir: /opt/libpcap_echo_server
+      chdir: "{{ path }}/src"
       target: uninstall
 
   - name: Delete content & directory
     file:
       state: absent
-      path: /opt/libpcap_echo_server
+      path: "{{ path }}/src"

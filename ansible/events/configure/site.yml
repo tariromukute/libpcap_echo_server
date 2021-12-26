@@ -13,7 +13,7 @@
 
   - name: Creating a file with content on {{ path }}
     copy:
-      dest: "{{ path }}/olan-libpcap-echo-server.conf"
+      dest: "{{ path }}/src/olan-libpcap-echo-server.conf"
       content: |
         RCV={{ receive_interface }}
         SND={{ send_interface }}
@@ -21,9 +21,9 @@
 
   - name: Run make in {{ path }}
     community.general.make:
-      chdir: "{{ path }}"
+      chdir: "{{ path }}/src"
 
   - name: Run make install
     community.general.make:
-      chdir: "{{ path }}"
+      chdir: "{{ path }}/src"
       target: install

@@ -19,7 +19,7 @@
     - name: copying file with playbook
       become: true 
       copy:
-        src: ../../../src/
+        src: ../../../src
         dest: /home/libpcap_echo_server
         remote_src: no
 
@@ -34,3 +34,5 @@
 - import_playbook: ../../events/operate/stop.yml
 
 - import_playbook: ../../events/terminate/site.yml
+  vars:
+    vnf_path: /home/libpcap_echo_server
