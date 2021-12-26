@@ -2,26 +2,28 @@
   # specify a limit on the command line, using -l or --limit to limit the hosts
   hosts: 'all'
 
+  vars:
+    path: "{{ vnf_path | default('/opt/libpcap_echo_server') }}"
+
   tasks:
-  - name: Build the default target
-    community.general.make:
-      chdir: /opt/libpcap_echo_server
+  - name: Recursively change ownership of a directory
+    ansible.builtin.file:
+      path: "{{ path }}"
+      state: directory
 
-  - name: Build the default target
-    community.general.make:
-      chdir: /opt/libpcap_echo_server
-      target: install
-
-  # Overide the default conf file
-  - name: Build the default target
-    community.general.make:
-      chdir: /opt/libpcap_echo_server
-      target: install
-
-  - name: Creating a file with content
+  - name: Creating a file with content on {{ path }}
     copy:
-      dest: "/opt/libpcap_echo_server/olan-libpcap-echo-server.conf"
+      dest: "{{ path }}/olan-libpcap-echo-server.conf"
       content: |
         RCV={{ receive_interface }}
         SND={{ send_interface }}
       mode: +x
+
+  - name: Run make in {{ path }}
+    community.general.make:
+      chdir: "{{ path }}"
+
+  - name: Run make install
+    community.general.make:
+      chdir: "{{ path }}"
+      target: install

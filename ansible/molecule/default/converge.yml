@@ -20,12 +20,14 @@
       become: true 
       copy:
         src: ../../../src/
-        dest: /opt/libpcap_echo_server
+        dest: /home/libpcap_echo_server
         remote_src: no
 
 - import_playbook: ../../events/instantiate/site.yml
 
 - import_playbook: ../../events/configure/site.yml
+  vars:
+    vnf_path: /home/libpcap_echo_server
 
 - import_playbook: ../../events/operate/start.yml
 
