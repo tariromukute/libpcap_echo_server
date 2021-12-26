@@ -1,2 +1,0 @@
-- name: Run pre tasks for bpftrace
-  include: start.yml

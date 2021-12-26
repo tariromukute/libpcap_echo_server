@@ -1,22 +1,27 @@
-- name: Build the default target
-  community.general.make:
-    chdir: /opt/libpcap_echo_server
+- name: Default host (specify -l to limit hosts)
+  # specify a limit on the command line, using -l or --limit to limit the hosts
+  hosts: 'all'
 
-- name: Build the default target
-  community.general.make:
-    chdir: /opt/libpcap_echo_server
-    target: install
+  tasks:
+  - name: Build the default target
+    community.general.make:
+      chdir: /opt/libpcap_echo_server
 
-# Overide the default conf file
-- name: Build the default target
-  community.general.make:
-    chdir: /opt/libpcap_echo_server
-    target: install
+  - name: Build the default target
+    community.general.make:
+      chdir: /opt/libpcap_echo_server
+      target: install
 
-- name: Creating a file with content
-  copy:
-    dest: "/opt/libpcap_echo_server/olan-libpcap-echo-server.conf"
-    content: |
-      RCV={{ receive_interface }}
-      SND={{ send_interface }}
-    mode: +x
+  # Overide the default conf file
+  - name: Build the default target
+    community.general.make:
+      chdir: /opt/libpcap_echo_server
+      target: install
+
+  - name: Creating a file with content
+    copy:
+      dest: "/opt/libpcap_echo_server/olan-libpcap-echo-server.conf"
+      content: |
+        RCV={{ receive_interface }}
+        SND={{ send_interface }}
+      mode: +x

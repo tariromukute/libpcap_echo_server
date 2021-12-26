@@ -1,4 +1,9 @@
-- name: Start service olan-libpcap-echo-server, if not started
-  ansible.builtin.service:
-    name: olan-libpcap-echo-server
-    state: started
+- name: Default host (specify -l to limit hosts)
+  # specify a limit on the command line, using -l or --limit to limit the hosts
+  hosts: 'all'
+
+  tasks:
+  - name: Start service olan-libpcap-echo-server, if not started
+    ansible.builtin.service:
+      name: olan-libpcap-echo-server
+      state: started
