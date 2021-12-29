@@ -1,0 +1,4 @@
+---
+vnf_path: /home/libpcap_echo_server
+receive_interface: eth2
+send_interface: eth2

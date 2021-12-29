@@ -3,6 +3,3 @@ build_packages:
 - g++
 - git
 - libpcap-dev
-# Make the interface localhost (lo) for molecule test only
-receive_interface: lo
-send_interface: lo

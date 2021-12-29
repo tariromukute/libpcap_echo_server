@@ -12,8 +12,14 @@ platforms:
     - /sys/fs/cgroup:/sys/fs/cgroup:ro
   privileged: true
   pre_build_image: true
+  # Add group to read the group variables (makes it configurable)
+  groups:
+    - libpcap
 provisioner:
   name: ansible
+  inventory:
+    links:
+      group_vars: ../../group_vars/
 verifier:
   name: ansible
 scenario:

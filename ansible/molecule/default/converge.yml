@@ -1,11 +1,5 @@
 - name: Converge
-  hosts: all
-  
-  vars:
-    rcvInterfaceOverride: "{{ lookup('env', 'LIBPCAP_RCV_INTERFACE') }}"
-    rcvInterface: "{{ (rcvInterfaceOverride | length > 0) | ternary(rcvInterfaceOverride, 'lo') }}"
-    sndInterfaceOverride: "{{ lookup('env', 'LIBPCAP_SND_INTERFACE') }}"
-    sndInterface: "{{ (sndInterfaceOverride | length > 0) | ternary(sndInterfaceOverride, 'lo') }}"
+  hosts: libpcap
 
   # These tasks are only for testing. During prod the files
   # and tasks are fetched from the git repo and run directly,
@@ -26,13 +20,9 @@
 - import_playbook: ../../events/instantiate/site.yml
 
 - import_playbook: ../../events/configure/site.yml
-  vars:
-    vnf_path: /home/libpcap_echo_server
 
 - import_playbook: ../../events/operate/start.yml
 
 - import_playbook: ../../events/operate/stop.yml
 
 - import_playbook: ../../events/terminate/site.yml
-  vars:
-    vnf_path: /home/libpcap_echo_server

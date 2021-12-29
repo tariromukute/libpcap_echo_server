@@ -1,6 +1,6 @@
 - name: Default host (specify -l to limit hosts)
   # specify a limit on the command line, using -l or --limit to limit the hosts
-  hosts: 'all'
+  hosts: 'libpcap'
 
   tasks:
   - name: Update packages

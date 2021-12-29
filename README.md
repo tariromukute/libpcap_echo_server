@@ -24,11 +24,26 @@ cat ~/.ssh/local_rsa.pub | ssh ovsxdp@192.168.122.155 "mkdir ~/.ssh && cat >> ~/
 
 2. Create inventory
    
+The scenario and the plays depend on a host group libpcap. The group should the the VNF name. This will mean that wehn we have a number of VNFs on a host, their variables will be found under the VNFs group name.
+
+Using .INI
 ```
-[server]
+[libpcap]
 server1 ansible_host=192.168.122.185 ansible_user=olan ansible_ssh_private_key_file=~/.ssh/local_rsa
+
+[libpcap:vars]
+vnf_path=/home/libpcap_echo_server
+receive_interface=eth2
+send_interface=eth2
 ```
 
+Using YAML
+```yaml
+---
+vnf_path: /home/libpcap_echo_server
+receive_interface: eth2
+send_interface: eth2
+```
 ## Test with molecule
 
 You can run the test using molecule
@@ -53,3 +68,7 @@ molecule login
 # print the logs of the service
 journalctl -o json-pretty -u olan-libpcap-echo-server
 ```
+
+# Useful Resources
+- [How to build your inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
+- [Using Variables and their precedence](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html)
