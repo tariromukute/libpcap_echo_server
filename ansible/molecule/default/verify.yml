@@ -11,5 +11,4 @@
     - name: Verify VNF is running
       assert:
         that:
-          - ansible_facts.services["olan-libpcap-echo-server.service"].state == 'running'
-          - ansible_facts.services["olan-libpcap-echo-server.service"].status == 'enabled'
+          - ansible_facts.services["olan-libpcap-echo-server.service"] is undefined
